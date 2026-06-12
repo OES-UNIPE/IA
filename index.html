@@ -531,20 +531,21 @@
       z-index: 100;
       margin: 12px 0 20px;
       overflow: hidden;
+      max-width: 100%;
     }
 
     .nav {
       display: flex;
       gap: 8px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      flex-wrap: wrap;
+      overflow-x: hidden;
       max-width: 100%;
-      padding-bottom: 4px;
-      -webkit-overflow-scrolling: touch;
+      min-width: 0;
+      padding-bottom: 2px;
     }
 
     .nav::-webkit-scrollbar {
-      height: 4px;
+      display: none;
     }
 
     .nav::-webkit-scrollbar-thumb {
@@ -560,10 +561,19 @@
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 8px 14px;
+      padding: 8px 12px;
       transition: var(--transition);
-      white-space: nowrap;
-      flex-shrink: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      text-align: center;
+      line-height: 1.2;
+      min-height: 38px;
+      min-width: min(180px, 100%);
+      max-width: 100%;
+      flex: 1 1 190px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav a:hover {
@@ -918,6 +928,12 @@
       .two, .three, .textGrid { grid-template-columns: 1fr; }
       .filters-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
       .filter-group, .filter-group.col-span-2 { grid-column: span 3; }
+      .nav { gap: 7px; }
+      .nav a {
+        flex-basis: 170px;
+        min-width: min(160px, 100%);
+        padding: 8px 10px;
+      }
     }
 
     @media (max-width: 768px) {
@@ -933,6 +949,17 @@
       .sectionHead { flex-direction: column; align-items: flex-start; gap: 8px; }
       .textTools { flex-direction: column; align-items: flex-start; gap: 8px; }
       .termGrid { grid-template-columns: 1fr; }
+      .nav-container { padding: 10px 0; }
+      .nav {
+        gap: 6px;
+      }
+      .nav a {
+        flex-basis: 148px;
+        min-width: min(138px, 100%);
+        min-height: 42px;
+        padding: 7px 9px;
+        font-size: 0.76rem;
+      }
     }
 
     @media (max-width: 480px) {
@@ -941,6 +968,13 @@
       .toolbar button, .toolbar .btn { width: 100%; }
       .metaLine span { width: 100%; border-radius: var(--radius-md); }
       .section.card, .card { padding: 16px; }
+      .nav a {
+        flex-basis: 128px;
+        min-width: min(124px, 100%);
+        min-height: 40px;
+        padding: 7px 8px;
+        font-size: 0.72rem;
+      }
     }
 
     /* Print styles */
