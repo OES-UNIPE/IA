@@ -1,0 +1,1586 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard encuesta IA generativa - UNIPE</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-hover: #f1f5f9;
+      --ink: #0f172a;
+      --ink-light: #334155;
+      --muted: #64748b;
+      --muted-light: #cbd5e1;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      /* Institutional Palette */
+      --brand: #174a7c;
+      --brand-hover: #0f355c;
+      --brand-soft: #eff6ff;
+      --brand-2: #0b6b62;
+      --brand-2-soft: #f0fdfa;
+      --accent: #b45309;
+      --accent-soft: #fef3c7;
+      
+      /* Semantic States */
+      --danger: #b91c1c;
+      --danger-soft: #fef2f2;
+      --warn: #d97706;
+      --warn-soft: #fffbeb;
+      --success: #047857;
+      --success-soft: #ecfdf5;
+      
+      /* Shadows & Radii */
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.03);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background:
+        linear-gradient(180deg, #eef4f8 0, #f8fafc 280px, #f8fafc 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0d3154 0%, #174a7c 54%, #0b6b62 100%);
+      color: #fff;
+      padding: 42px 20px 72px;
+      border-bottom: 4px solid var(--brand-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 72px;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+
+    header .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, .num {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .metaLine {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      color: #dbeafe;
+      font-size: 0.82rem;
+    }
+
+    .metaLine span {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      background: #fff;
+      color: var(--brand);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    button:hover, .btn:hover {
+      background: var(--brand-soft);
+      border-color: var(--brand);
+      color: var(--brand);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    button:active, .btn:active {
+      transform: translateY(0);
+    }
+
+    button.primary, .btn.primary {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    button.primary:hover, .btn.primary:hover {
+      background: var(--brand-hover);
+      border-color: var(--brand-hover);
+      color: #fff;
+    }
+
+    button.secondary, .btn.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: none;
+    }
+
+    button.secondary:hover, .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.24);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    button.ghost, .btn.ghost {
+      background: transparent;
+      color: var(--ink-light);
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    button.ghost:hover, .btn.ghost:hover {
+      background: var(--panel-hover);
+      color: var(--ink);
+    }
+
+    button.btn-sm, .btn.btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: var(--radius-sm);
+    }
+
+    button:disabled, .btn:disabled, button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    main {
+      padding: 0 20px 60px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    /* Filters Box */
+    .filters-container {
+      margin-top: -42px;
+      position: relative;
+      z-index: 10;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 22px;
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .filters-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 1.05rem;
+    }
+
+    .filters-copy {
+      margin: 6px 0 0 26px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      max-width: 680px;
+    }
+
+    .filters-title svg {
+      color: var(--brand);
+    }
+
+    .filters-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      grid-column: span 2;
+      min-width: 0;
+    }
+
+    .filter-group.col-span-2 {
+      grid-column: span 4;
+    }
+
+    .filter-group label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, input[type=search] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+      min-height: 42px;
+    }
+
+    select:hover, input[type=search]:hover {
+      border-color: var(--border-hover);
+    }
+
+    select:focus, input[type=search]:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-soft);
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input-wrapper input {
+      padding-left: 36px;
+    }
+
+    .active-filter-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-top: 16px;
+      padding: 12px 14px;
+      color: var(--ink-light);
+      font-size: 0.86rem;
+    }
+
+    .active-filter-summary strong {
+      color: var(--ink);
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      color: var(--brand);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      max-width: 260px;
+    }
+
+    .filter-chip span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Status Alert */
+    .status {
+      padding: 14px 18px;
+      background: var(--brand-soft);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius-md);
+      color: var(--brand);
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin: 18px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .status .status-icon {
+      flex-shrink: 0;
+    }
+
+    .status.error {
+      background: var(--danger-soft);
+      border-left-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .status.success {
+      background: var(--success-soft);
+      border-left-color: var(--success);
+      color: var(--success);
+    }
+
+    .privacy {
+      background: var(--warn-soft);
+      color: var(--accent);
+      border: 1px solid #fef3c7;
+      border-left: 4px solid var(--warn);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .privacy svg {
+      flex-shrink: 0;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+      transition: var(--transition);
+      min-width: 0;
+    }
+
+    .section.card {
+      padding: 22px;
+    }
+
+    /* KPIs */
+    .kpis {
+      grid-template-columns: repeat(5, 1fr);
+      margin: 20px 0;
+    }
+
+    .kpi {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .kpi:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+    }
+
+    .kpi-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .kpi .num {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .kpi .lbl {
+      color: var(--ink-light);
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    .kpi small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kpi-blue { border-left: 4px solid var(--brand); }
+    .kpi-blue .kpi-icon { background: var(--brand-soft); color: var(--brand); }
+    
+    .kpi-green { border-left: 4px solid var(--success); }
+    .kpi-green .kpi-icon { background: var(--success-soft); color: var(--success); }
+    
+    .kpi-amber { border-left: 4px solid var(--accent); }
+    .kpi-amber .kpi-icon { background: var(--accent-soft); color: var(--accent); }
+    
+    .kpi-teal { border-left: 4px solid var(--brand-2); }
+    .kpi-teal .kpi-icon { background: var(--brand-2-soft); color: var(--brand-2); }
+    
+    .kpi-purple { border-left: 4px solid #7c3aed; }
+    .kpi-purple .kpi-icon { background: #f5f3ff; color: #7c3aed; }
+
+    /* Sticky Nav */
+    .nav-container {
+      position: sticky;
+      top: 0;
+      background: rgba(248, 250, 252, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+      z-index: 100;
+      margin: 12px 0 20px;
+      overflow: hidden;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      max-width: 100%;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .nav::-webkit-scrollbar-thumb {
+      background: var(--border-hover);
+      border-radius: 99px;
+    }
+
+    .nav a {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ink-light);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      transition: var(--transition);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav a:hover {
+      background: var(--brand-soft);
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .nav a.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    /* Sections */
+    .section {
+      margin-top: 28px;
+      scroll-margin-top: 100px;
+    }
+
+    .sectionHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .sectionHead h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .sectionHead p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .two { grid-template-columns: 1fr 1fr; }
+    .three { grid-template-columns: 1fr 1fr 1fr; }
+    .full { grid-column: 1 / -1; }
+
+    h2 { margin: 0 0 12px; font-size: 1.1rem; }
+    h3 { margin: 0 0 8px; font-size: 0.98rem; }
+    
+    .note {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: -6px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    /* Progress Bars (Redesigned) */
+    .barrow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .barlabel {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-light);
+      line-height: 1.35;
+    }
+
+    .barval {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .bartrack {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand) 0%, #3b82f6 100%);
+      border-radius: 4px;
+      transition: width 0.4s ease-out;
+    }
+
+    /* Stacked Bars */
+    .stack {
+      height: 22px;
+      display: flex;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #f1f5f9;
+      margin: 8px 0 12px;
+    }
+
+    .seg {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #fff;
+      min-width: 0;
+      transition: width 0.3s ease;
+    }
+
+    .seg span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 4px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Matrix Tables */
+    .matrix {
+      overflow-x: auto;
+      margin: 0 -20px;
+      padding: 0 20px;
+    }
+
+    .matrix table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      font-size: 0.82rem;
+    }
+
+    .matrix th, .matrix td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .matrix th {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      text-align: left;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      z-index: 1;
+    }
+
+    .matrix td:first-child {
+      min-width: 200px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .matrix tr:hover td {
+      background: var(--panel-hover);
+    }
+
+    /* Scores */
+    .score {
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 10px;
+      display: inline-block;
+      min-width: 46px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    .score.low { background: var(--danger-soft); color: var(--danger); }
+    .score.mid { background: var(--warn-soft); color: var(--accent); }
+    .score.high { background: var(--success-soft); color: var(--success); }
+
+    /* Open Comments & Speech Bubbles */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab {
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      color: var(--ink-light);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .tab:hover {
+      background: var(--panel-hover);
+      border-color: var(--border-hover);
+    }
+
+    .tab.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    .textTools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .textGrid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+    }
+
+    .textGrid > *,
+    .termGrid > * {
+      min-width: 0;
+    }
+
+    .texts {
+      display: grid;
+      gap: 12px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .texts::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .texts::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .quote {
+      border-left: 4px solid var(--brand);
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      color: var(--ink-light);
+      line-height: 1.5;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .quote:hover {
+      background: var(--panel-hover);
+      transform: translateX(2px);
+    }
+
+    .quote small {
+      display: block;
+      color: var(--muted);
+      margin-top: 8px;
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+
+    .termGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .miniTitle {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin: 12px 0;
+      font-style: italic;
+      background: #f8fafc;
+      border: 1px dashed var(--border-hover);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 32px;
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+      text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1120px) {
+      .kpis { grid-template-columns: repeat(3, 1fr); }
+      .two, .three, .textGrid { grid-template-columns: 1fr; }
+      .filters-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .filter-group, .filter-group.col-span-2 { grid-column: span 3; }
+    }
+
+    @media (max-width: 768px) {
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+      header { padding: 30px 16px 62px; }
+      main { padding-left: 16px; padding-right: 16px; }
+      .filters-container { padding: 18px; }
+      .filters-header { flex-direction: column; align-items: stretch; }
+      .filters-copy { margin-left: 0; }
+      .filters-grid { grid-template-columns: 1fr; }
+      .filter-group, .filter-group.col-span-2 { grid-column: 1; }
+      .kpi { padding: 14px; }
+      .sectionHead { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .textTools { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .termGrid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .kpis { grid-template-columns: 1fr; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar button, .toolbar .btn { width: 100%; }
+      .metaLine span { width: 100%; border-radius: var(--radius-md); }
+      .section.card, .card { padding: 16px; }
+    }
+
+    /* Print styles */
+    @media print {
+      header, .filters-container, .toolbar, .nav-container, .tabs, .textTools, footer {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+        color: #000;
+      }
+      main {
+        padding: 0;
+      }
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+        margin-bottom: 20px;
+      }
+      .two, .three, .kpis, .textGrid {
+        grid-template-columns: 1fr 1fr !important;
+      }
+      .texts, .tableWrap {
+        max-height: none !important;
+        overflow: visible !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Dashboard de respuestas · Encuesta IA generativa UNIPE</h1>
+    
+    <div class="metaLine">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+        Fuente: CSV Google Sheets
+      </span>
+      <span id="updatedAt">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Actualización pendiente
+      </span>
+      <span id="columnCount">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+        Columnas: -
+      </span>
+    </div>
+    
+    <div class="toolbar">
+      <button id="refreshBtn" class="primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.5"/></svg>
+        Actualizar datos
+      </button>
+      <button class="secondary" onclick="window.print()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-3a2 2 0 00-2-2H9a2 2 0 00-2 2v3a2 2 0 002 2zm5-14h.01"/></svg>
+        Imprimir / PDF
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Filters Container -->
+  <section class="filters-container">
+    <div class="filters-header">
+      <div>
+        <div class="filters-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+          <span>Filtros y búsqueda</span>
+        </div>
+        <p class="filters-copy">Combiná criterios de perfil y buscá en respuestas abiertas para acotar el universo visible en gráficos, tarjetas y tabla.</p>
+      </div>
+      <button id="resetBtn" class="btn btn-sm ghost text-brand" style="color: var(--brand);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        Limpiar filtros
+      </button>
+    </div>
+    
+    <div class="filters-grid">
+      <div class="filter-group col-span-2">
+        <label for="fText">Búsqueda general</label>
+        <div class="search-input-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input id="fText" type="search" placeholder="Ej.: evaluación, escritura, formación..." />
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fDept">Departamento</label>
+        <select id="fDept"></select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fAnt">Antigüedad</label>
+        <select id="fAnt"></select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fCat">Categoría</label>
+        <select id="fCat"></select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fAge">Edad</label>
+        <select id="fAge"></select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fCarga">Carga Horaria</label>
+        <select id="fCarga"></select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="fUse">Uso General IA</label>
+        <select id="fUse"></select>
+      </div>
+    </div>
+    <div id="activeFilterSummary" class="active-filter-summary">
+      <span>Esperando datos para mostrar el resumen de filtros.</span>
+    </div>
+  </section>
+
+  <!-- Status Box -->
+  <div id="status" class="status">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="status-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Cargando datos...</span>
+  </div>
+  
+  <div class="privacy">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    <span>Privacidad: La aplicación no procesa ni expone correos electrónicos ni identidades personales. Los registros se asocian a identificadores numéricos anónimos.</span>
+  </div>
+
+  <!-- KPI Indicators -->
+  <section class="grid kpis" id="kpis"></section>
+
+  <!-- Sticky sub-nav -->
+  <div class="nav-container">
+    <nav class="nav" id="sectionNav"></nav>
+  </div>
+
+  <!-- Dynamic Sections -->
+  <section id="sections"></section>
+
+  <footer>
+    Universidad Pedagógica Nacional (UNIPE) · Fuente: Respuestas de formulario en Google Sheets publicadas como CSV.<br>
+    La clasificación y agregación de variables se procesa localmente en tiempo de ejecución.
+  </footer>
+</main>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcDAWOf7HmZHBuU2fgOLM0ZaXxa3R8TpIjVK_a6ZX0unfNpqHGJZekyVsuLC17eAAw44kIHUgZV_1e/pub?gid=735206017&single=true&output=csv";
+
+let rows = [], filtered = [], columns = [], classified = [], currentTextKey = "";
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const norm = s => (s ?? "").toString().trim();
+const lower = s => norm(s).toLocaleLowerCase("es-AR");
+const fold = s => lower(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const short = (s,n=68)=> norm(s).length>n ? norm(s).slice(0,n-1)+"..." : norm(s);
+const cleanHeader = h => norm(h).replace(/\s+/g," ");
+const slug = s => fold(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+
+const sectionDefs = [
+  {id:"perfil", title:"1. Perfil del respondente", desc:"Variables de composición de la muestra y filtros principales."},
+  {id:"conocimiento", title:"2. Conocimiento de IA generativa", desc:"Acuerdo sobre conocimiento, formación y disposición institucional."},
+  {id:"herramientas", title:"3. Herramientas específicas", desc:"Nivel general y uso de familias de herramientas de IA."},
+  {id:"usos", title:"4. Usos en docencia e investigación", desc:"Frecuencia de uso en tareas académicas."},
+  {id:"transformaciones", title:"5. Transformaciones docentes", desc:"Cambios declarados en prácticas, evaluación y planificación."},
+  {id:"regulaciones", title:"6. Regulaciones y criterios institucionales", desc:"Criterios existentes y acuerdos sobre lineamientos."},
+  {id:"preocupaciones", title:"7. Preocupaciones y obstáculos", desc:"Selección múltiple de riesgos percibidos y barreras de uso."},
+  {id:"expectativas", title:"8. Expectativas y proyecciones", desc:"Acciones prioritarias e interés en conocer más."},
+  {id:"abiertas", title:"9. Comentarios abiertos", desc:"Respuestas abiertas, palabras frecuentes y bigramas."}
+];
+
+const scales = {
+  likert: ["Totalmente en desacuerdo","En desacuerdo","Ni de acuerdo ni en desacuerdo","De acuerdo","Totalmente de acuerdo"],
+  use: ["No las uso","Las probé alguna vez","Las uso a veces","Las uso frecuentemente"],
+  freq: ["Nunca","Raramente","A veces","Frecuentemente"],
+  change: ["No","Parcialmente","Sí"]
+};
+
+const scaleValues = Object.fromEntries(Object.entries(scales).map(([k,arr])=>[k,Object.fromEntries(arr.map((v,i)=>[v,i+1]))]));
+
+// Refined, professional semantic colors
+const colors = {
+  likert: ["#b91c1c", "#f87171", "#94a3b8", "#60a5fa", "#059669"],
+  use: ["#b91c1c", "#d97706", "#3b82f6", "#047857"],
+  freq: ["#b91c1c", "#d97706", "#3b82f6", "#047857"],
+  change: ["#b91c1c", "#d97706", "#047857"]
+};
+
+const stopwords = new Set(("a al algo algunas algunos ante antes como con contra cual cuando de del desde donde dos el ella ellas ellos en entre era eran es esa esas ese eso esos esta estaba estaban estamos estan estar estas este esto estos fue fueron ha haber habia han hasta hay la las le les lo los mas me mi mis muy ni no nos o otra otras otro otros para pero por porque que quien se sin sobre son su sus tambien te tener tiene todo todos un una unas unos y ya si solo cada asi ser sus les como mas entre puede pueden").split(" "));
+
+function parseCSV(text){
+  text = text.replace(/^\uFEFF/,"");
+  const out=[]; let row=[], val="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i], n=text[i+1];
+    if(q){
+      if(c==='"' && n==='"'){ val+='"'; i++; }
+      else if(c==='"'){ q=false; }
+      else val+=c;
+    }else if(c==='"') q=true;
+    else if(c===','){ row.push(val); val=""; }
+    else if(c==='\n'){ row.push(val); out.push(row); row=[]; val=""; }
+    else if(c==='\r'){}
+    else val+=c;
+  }
+  if(val.length || row.length){ row.push(val); out.push(row); }
+  const headers = (out.shift() || []).map(cleanHeader);
+  return out.filter(r=>r.some(x=>norm(x))).map(r=>{
+    const obj={};
+    headers.forEach((h,i)=> obj[h]=norm(r[i]));
+    return obj;
+  });
+}
+
+async function loadData(){
+  setStatus("Cargando datos desde Google Sheets...", "info");
+  try{
+    const res = await fetch(CSV_URL + "&cache=" + Date.now());
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    rows = parseCSV(await res.text());
+    init();
+  }catch(err){
+    setStatus("No se pudo cargar el CSV publicado desde Google Sheets. Revise la conexión o la publicación de la hoja. Error: " + err.message, "error");
+  }
+}
+
+function init(){
+  rows = rows.map(r=>Object.fromEntries(Object.entries(r).map(([k,v])=>[cleanHeader(k),v])));
+  columns = Object.keys(rows[0] || {});
+  classified = columns.map(classifyColumn);
+  const firstText = classified.find(c=>c.type==="open") || classified.find(c=>c.section==="abiertas");
+  currentTextKey = currentTextKey && classified.some(c=>c.key===currentTextKey) ? currentTextKey : (firstText?.key || "");
+  fillFilters();
+  render();
+  $("#updatedAt").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Última actualización: ` + new Date().toLocaleString("es-AR");
+  $("#columnCount").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg> Columnas: ${columns.length}`;
+  setStatus(`Datos cargados correctamente: ${rows.length} respuestas procesadas.`, "success");
+}
+
+function classifyColumn(header){
+  const h = cleanHeader(header), f = fold(h), values = [...new Set(rows.map(r=>norm(r[h])).filter(Boolean))];
+  const meta = {key:h, header:h, label:labelFromHeader(h), section:sectionFor(h), type:"categorical", hidden:false, values};
+  if(f.includes("correo electronico")) return {...meta,type:"technical",section:"perfil",hidden:true,label:"Correo electrónico"};
+  if(f.includes("marca temporal")) return {...meta,type:"technical",section:"perfil",hidden:true,label:"Marca temporal"};
+  if(h.startsWith("2.1") || h.startsWith("6.3")) return {...meta,type:"likert"};
+  if(h.startsWith("3.2")) return {...meta,type:"use"};
+  if(h.startsWith("4.1") || h.startsWith("4.2")) return {...meta,type:"freq"};
+  if(h.startsWith("5.1")) return {...meta,type:"change"};
+  if(h.startsWith("7.1") || h.startsWith("7.2") || h.startsWith("8.1") || h.startsWith("6.2")) return {...meta,type:"multi"};
+  if(h.startsWith("5.2") || h.startsWith("8.3") || h.startsWith("9.1")) return {...meta,type:"open"};
+  if(h.startsWith("1.") || h.startsWith("3.1") || h.startsWith("6.1") || h.startsWith("8.2")) return {...meta,type:"categorical"};
+  if(values.some(v=>splitMulti(v).length>1)) return {...meta,type:"multi"};
+  if(values.some(v=>norm(v).length>110)) return {...meta,type:"open"};
+  return meta;
+}
+
+function sectionFor(h){
+  if(h.startsWith("1.") || h.includes("Marca temporal")) return "perfil";
+  if(h.startsWith("2.")) return "conocimiento";
+  if(h.startsWith("3.")) return "herramientas";
+  if(h.startsWith("4.")) return "usos";
+  if(h.startsWith("5.")) return "transformaciones";
+  if(h.startsWith("6.")) return "regulaciones";
+  if(h.startsWith("7.")) return "preocupaciones";
+  if(h.startsWith("8.")) return "expectativas";
+  if(h.startsWith("9.")) return "abiertas";
+  return "abiertas";
+}
+
+function labelFromHeader(h){
+  const m = h.match(/\[(.*)\]/);
+  if(m) return m[1].trim();
+  return h.replace(/^\d\.\d\s*/,"").replace(/^[^?]+\?\s*/,"").trim();
+}
+
+function fillFilters(){
+  const controls = [
+    ["#fDept", findCol("1.2")],
+    ["#fAnt", findCol("1.3")],
+    ["#fCat", findCol("1.4")],
+    ["#fCarga", findCol("1.6")],
+    ["#fUse", findCol("3.1")]
+  ];
+  controls.forEach(([sel,col])=>{
+    const vals = uniqueValues(col).sort((a,b)=>a.localeCompare(b,"es"));
+    $(sel).innerHTML = `<option value="">Todos/as</option>` + vals.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+    $(sel).onchange = render;
+  });
+  const ageCol = findCol("1.5");
+  $("#fAge").innerHTML = `<option value="">Todas</option><option value="lt35">Menos de 35</option><option value="35-44">35 a 44</option><option value="45-54">45 a 54</option><option value="55-64">55 a 64</option><option value="65plus">65 o más</option>`;
+  $("#fAge").onchange = render;
+  $("#fAge").disabled = !ageCol;
+  $("#fText").oninput = render;
+  
+  // Binding headers
+  $("#resetBtn").onclick = () => {
+    ["#fDept","#fAnt","#fCat","#fCarga","#fAge","#fUse"].forEach(s => $(s).value = "");
+    $("#fText").value = "";
+    render();
+  };
+  $("#refreshBtn").onclick = loadData;
+}
+
+function applyFilters(){
+  const filters = [
+    [findCol("1.2"), $("#fDept").value],
+    [findCol("1.3"), $("#fAnt").value],
+    [findCol("1.4"), $("#fCat").value],
+    [findCol("1.6"), $("#fCarga").value],
+    [findCol("3.1"), $("#fUse").value]
+  ];
+  const ageMode = $("#fAge").value, ageCol = findCol("1.5"), text = fold($("#fText").value);
+  return rows.filter(r=>{
+    if(filters.some(([c,v])=> v && norm(r[c])!==v)) return false;
+    if(ageMode && !ageMatches(parseFloat(r[ageCol]), ageMode)) return false;
+    if(!text) return true;
+    return classified.filter(c=>c.type==="open").some(c=>fold(r[c.key]).includes(text));
+  });
+}
+
+function render(){
+  filtered = applyFilters();
+  renderFilterSummary();
+  renderKpis();
+  renderNav();
+  renderSections();
+}
+
+function renderFilterSummary(){
+  const summary = $("#activeFilterSummary");
+  if (!summary) return;
+  const filters = [
+    ["Departamento", "#fDept"],
+    ["Antigüedad", "#fAnt"],
+    ["Categoría", "#fCat"],
+    ["Carga horaria", "#fCarga"],
+    ["Uso IA", "#fUse"],
+    ["Edad", "#fAge"]
+  ];
+  const chips = filters
+    .map(([label, selector]) => {
+      const el = $(selector);
+      if (!el || !el.value) return "";
+      const text = el.options?.[el.selectedIndex]?.text || el.value;
+      return `<span class="filter-chip"><strong>${escapeHtml(label)}:</strong><span>${escapeHtml(text)}</span></span>`;
+    })
+    .filter(Boolean);
+  const searchText = norm($("#fText")?.value);
+  if (searchText) chips.unshift(`<span class="filter-chip"><strong>Texto:</strong><span>${escapeHtml(searchText)}</span></span>`);
+  summary.innerHTML = `
+    <span><strong>${filtered.length}</strong> de <strong>${rows.length}</strong> respuestas visibles</span>
+    <div class="filter-chips">${chips.length ? chips.join("") : `<span class="muted">Sin filtros activos</span>`}</div>`;
+}
+
+function renderKpis(){
+  const n = filtered.length, total = rows.length;
+  const ageCol = findCol("1.5");
+  const ages = filtered.map(r=>parseFloat(r[ageCol])).filter(x=>!isNaN(x));
+  const useCol = findCol("3.1");
+  const frequent = filtered.filter(r=>["Las utilizo frecuentemente","Las uso frecuentemente"].includes(r[useCol])).length;
+  const interestCol = columns.find(h=>h.includes("Me interesa capacitarme"));
+  const interest = filtered.filter(r=>["De acuerdo","Totalmente de acuerdo"].includes(r[interestCol])).length;
+  const openCount = classified.filter(c=>c.type==="open").reduce((acc,c)=>acc+filtered.filter(r=>norm(r[c.key])).length,0);
+  
+  $("#kpis").innerHTML = `
+    <div class="card kpi kpi-blue">
+      <div class="kpi-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      </div>
+      <div class="kpi-info">
+        <div class="num">${n}</div>
+        <div class="lbl">Respuestas Filtradas</div>
+        <small>${total} respuestas totales</small>
+      </div>
+    </div>
+    
+    <div class="card kpi kpi-green">
+      <div class="kpi-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </div>
+      <div class="kpi-info">
+        <div class="num">${pct(n,total)}%</div>
+        <div class="lbl">Proporción Muestra</div>
+        <small>Segun filtros activos</small>
+      </div>
+    </div>
+    
+    <div class="card kpi kpi-amber">
+      <div class="kpi-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </div>
+      <div class="kpi-info">
+        <div class="num">${ages.length?avg(ages).toFixed(1):"-"}</div>
+        <div class="lbl">Edad Promedio</div>
+        <small>Muestra de encuestados</small>
+      </div>
+    </div>
+    
+    <div class="card kpi kpi-teal">
+      <div class="kpi-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <div class="kpi-info">
+        <div class="num">${pct(frequent,n)}%</div>
+        <div class="lbl">Uso Frecuente IA</div>
+        <small>Pregunta 3.1</small>
+      </div>
+    </div>
+    
+    <div class="card kpi kpi-purple">
+      <div class="kpi-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </div>
+      <div class="kpi-info">
+        <div class="num">${openCount}</div>
+        <div class="lbl">Textos Abiertos</div>
+        <small>Respuestas cualitativas</small>
+      </div>
+    </div>
+  `;
+}
+
+function renderNav(){
+  $("#sectionNav").innerHTML = sectionDefs.map(s=>`<a href="#sec-${s.id}">${s.title.split(". ")[0]}. ${escapeHtml(s.title.split(". ")[1] || s.title)}</a>`).join("");
+}
+
+function renderSections(){
+  $("#sections").innerHTML = sectionDefs.map(def=>renderSection(def)).join("");
+  $$("#openTabs .tab").forEach(t=>t.onclick=()=>{ currentTextKey=t.dataset.key; renderSections(); });
+}
+
+function renderSection(def){
+  const cols = classified.filter(c=>c.section===def.id && !c.hidden);
+  if(!cols.length) return "";
+  if(def.id==="abiertas") return renderOpenSection(def, cols);
+  const cards = [];
+  const categorical = cols.filter(c=>c.type==="categorical" || (c.type==="technical" && !c.hidden));
+  const matrixTypes = ["likert","use","freq","change"];
+  matrixTypes.forEach(t=>{
+    const set = cols.filter(c=>c.type===t);
+    if(set.length) cards.push(`<article class="card ${set.length>5?"full":""}"><h2>${titleForType(t)}</h2><p class="note">${noteForType(t)}</p><div class="matrix">${matrixHtml(set,t)}</div></article>`);
+  });
+  categorical.forEach(c=>{
+    const ageNote = c.key === findCol("1.5") ? `<p class="note">Agrupado por rangos de edad.</p>` : "";
+    const chart = barsHtml(categoricalCounts(c), filtered.length);
+    if(c.type==="technical") cards.push(`<article class="card"><h2>${escapeHtml(c.label)}</h2>${ageNote}${chart}</article>`);
+    else cards.push(`<article class="card"><h2>${escapeHtml(short(c.label,82))}</h2>${ageNote}${chart}</article>`);
+  });
+  cols.filter(c=>c.type==="multi").forEach(c=>cards.push(`<article class="card"><h2>${escapeHtml(short(c.label,82))}</h2><p class="note">Selección múltiple. Porcentaje calculado sobre respuestas filtradas.</p>${barsHtml(multiCounts(c.key), filtered.length)}</article>`));
+  cols.filter(c=>c.type==="open").forEach(c=>cards.push(`<article class="card"><h2>${escapeHtml(short(c.label,82))}</h2>${openPreview(c)}</article>`));
+  return `<section class="section" id="sec-${def.id}">
+    <div class="sectionHead"><div><h2>${escapeHtml(def.title)}</h2><p>${escapeHtml(def.desc)}</p></div><p class="muted" style="font-size:0.75rem; font-weight:700;">${cols.length} columnas</p></div>
+    <div class="grid ${cards.length===1?"":cards.length===3?"three":"two"}">${cards.join("")}</div>
+  </section>`;
+}
+
+function renderOpenSection(def, cols){
+  const active = cols.find(c=>c.key===currentTextKey) || cols[0];
+  const analysis = textAnalysis(active);
+  return `<section class="section" id="sec-${def.id}">
+    <div class="sectionHead"><div><h2>${escapeHtml(def.title)}</h2><p>${escapeHtml(def.desc)}</p></div><p class="muted" style="font-size:0.75rem; font-weight:700;">${cols.length} preguntas abiertas</p></div>
+    <article class="card">
+      <div class="tabs" id="openTabs">${cols.map(c=>`<button class="tab ${c.key===active.key?"active":""}" data-key="${escapeHtml(c.key)}">${escapeHtml(short(questionNumber(c.key) + " " + c.label,52))}</button>`).join("")}</div>
+      <div class="textTools">
+        <p class="note" style="margin:0">${analysis.responses.length} respuestas válidas. La búsqueda superior filtra este listado y los gráficos.</p>
+        <button class="btn btn-sm ghost text-brand" onclick="document.querySelector('#fText').focus()" style="color:var(--brand);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          Buscar Texto
+        </button>
+      </div>
+      <div class="textGrid">
+        <div><h3>Respuestas</h3><div class="texts">${analysis.responses.length ? analysis.responses.map(x=>quoteHtml(x)).join("") : `<p class="empty">Sin respuestas para los filtros activos.</p>`}</div></div>
+        <div><h3>Términos frecuentes</h3><div class="termGrid"><div><div class="miniTitle">Palabras</div>${barsHtml(analysis.words, Math.max(1,analysis.tokenTotal), 20)}</div><div><div class="miniTitle">Bigramas</div>${barsHtml(analysis.bigrams, Math.max(1,analysis.bigramTotal), 20)}</div></div></div>
+      </div>
+    </article>
+  </section>`;
+}
+
+function matrixHtml(cols,type){
+  const cats = scales[type], scale = scaleValues[type];
+  let html = `<table><thead><tr><th>Ítem</th><th>Distribución</th><th>Prom.</th><th>n</th></tr></thead><tbody>`;
+  cols.forEach(c=>{
+    const vals = filtered.map(r=>normalizeScaleValue(r[c.key], type)).filter(Boolean);
+    const nums = vals.map(v=>scale[v]).filter(Boolean);
+    html += `<tr><td>${escapeHtml(short(c.label,94))}</td><td>${stackHtml(vals,cats,type)}</td><td>${nums.length?score(avg(nums),cats.length):"-"}</td><td>${vals.length}</td></tr>`;
+  });
+  html += `</tbody></table><div class="legend">${cats.map((c,i)=>`<span><i class="dot" style="background:${colors[type][i]}"></i>${escapeHtml(c)}</span>`).join("")}</div>`;
+  return html;
+}
+
+function stackHtml(vals,cats,type){
+  const n = vals.length || 1;
+  return `<div class="stack">` + cats.map((c,i)=>{
+    const count = vals.filter(v=>v===c).length, p = 100*count/n;
+    return `<div class="seg" style="width:${p}%;background:${colors[type][i]}" title="${escapeHtml(c)}: ${count} (${p.toFixed(1)}%)"><span>${p>=11?p.toFixed(0)+"%":""}</span></div>`;
+  }).join("") + `</div>`;
+}
+
+function openPreview(c){
+  const list = filtered.map((r,i)=>({txt:r[c.key], id:rows.indexOf(r)+1})).filter(x=>norm(x.txt));
+  return `<p class="note">${list.length} respuestas válidas.</p>${list.slice(0,4).map(x=>`<div class="quote">${escapeHtml(short(x.txt,220))}<small>#${x.id}</small></div>`).join("") || `<p class="empty">Sin respuestas.</p>`}`;
+}
+
+function textAnalysis(c){
+  const responses = filtered.map(r=>({txt:r[c.key], dept:r[findCol("1.2")], cat:r[findCol("1.4")], id:rows.indexOf(r)+1})).filter(x=>norm(x.txt));
+  const wordMap = {}, bigramMap = {}; let tokenTotal = 0, bigramTotal = 0;
+  responses.forEach(r=>{
+    const toks = tokens(r.txt);
+    tokenTotal += toks.length;
+    toks.forEach(t=>wordMap[t]=(wordMap[t]||0)+1);
+    for(let i=0;i<toks.length-1;i++){ const bg = toks[i]+" "+toks[i+1]; bigramMap[bg]=(bigramMap[bg]||0)+1; bigramTotal++; }
+  });
+  return {responses, words:topCounts(wordMap,20), bigrams:topCounts(bigramMap,20), tokenTotal, bigramTotal};
+}
+
+function tokens(text){
+  return fold(text).replace(/https?:\/\/\S+/g," ").replace(/[^a-z0-9ñ\s]/g," ").split(/\s+/).map(t=>t.trim()).filter(t=>t.length>3 && !stopwords.has(t) && isNaN(Number(t)));
+}
+
+function quoteHtml(x){
+  return `<div class="quote">${escapeHtml(x.txt)}<small>#${x.id}${[x.dept,x.cat].filter(Boolean).length ? " · " + escapeHtml([x.dept,x.cat].filter(Boolean).join(" · ")) : ""}</small></div>`;
+}
+
+function uniqueValues(col){ return col ? [...new Set(rows.map(r=>norm(r[col])).filter(Boolean))] : []; }
+function findCol(prefix){ return columns.find(h=>h.startsWith(prefix)) || ""; }
+function questionNumber(h){ const m = h.match(/^(\d\.\d)/); return m ? m[1] : ""; }
+function ageMatches(age, mode){
+  if(isNaN(age)) return false;
+  return mode==="lt35" ? age<35 : mode==="35-44" ? age>=35 && age<=44 : mode==="45-54" ? age>=45 && age<=54 : mode==="55-64" ? age>=55 && age<=64 : mode==="65plus" ? age>=65 : true;
+}
+function normalizeScaleValue(v,type){
+  const x = norm(v), f = fold(x);
+  if(!x) return "";
+  if(type==="use"){
+    if(f.includes("frecuent")) return "Las uso frecuentemente";
+    if(f.includes("a veces") || f.includes("ocasional")) return "Las uso a veces";
+    if(f.includes("probe")) return "Las probé alguna vez";
+    if(f.includes("no las uso") || f.includes("no las conozco") || f.includes("conozco, pero no")) return "No las uso";
+  }
+  if(type==="change" && f==="si") return "Sí";
+  return scales[type].includes(x) ? x : "";
+}
+function titleForType(t){ return {likert:"Escalas de acuerdo",use:"Niveles de uso",freq:"Frecuencias de uso",change:"Cambios declarados"}[t] || "Distribución"; }
+function noteForType(t){ return {likert:"Barras apiladas en orden de desacuerdo a acuerdo. Promedio descriptivo 1 a 5.",use:"Barras apiladas de no uso a uso frecuente. Promedio descriptivo 1 a 4.",freq:"Barras apiladas de nunca a frecuentemente. Promedio descriptivo 1 a 4.",change:"Distribución de No, Parcialmente y Sí. Promedio descriptivo 1 a 3."}[t] || ""; }
+function counts(arr){ const m={}; arr.forEach(v=>m[v]=(m[v]||0)+1); return topCounts(m); }
+function categoricalCounts(c){
+  if(c.key === findCol("1.5")) return ageRangeCounts(c.key);
+  return counts(filtered.map(r=>r[c.key]).filter(Boolean));
+}
+function ageRangeCounts(col){
+  const ranges = {
+    "Menos de 35": 0,
+    "35 a 44": 0,
+    "45 a 54": 0,
+    "55 a 64": 0,
+    "65 o más": 0
+  };
+  filtered.forEach(r=>{
+    const age = parseFloat(r[col]);
+    const label = ageRangeLabel(age);
+    if(label) ranges[label]++;
+  });
+  return Object.fromEntries(Object.entries(ranges).filter(([,v])=>v>0));
+}
+function ageRangeLabel(age){
+  if(isNaN(age)) return "";
+  if(age < 35) return "Menos de 35";
+  if(age <= 44) return "35 a 44";
+  if(age <= 54) return "45 a 54";
+  if(age <= 64) return "55 a 64";
+  return "65 o más";
+}
+function multiCounts(col){ const m={}; if(!col) return m; filtered.forEach(r=>splitMulti(r[col]).forEach(v=>m[v]=(m[v]||0)+1)); return topCounts(m); }
+function splitMulti(s){ return norm(s).split(/,|;|\n/).map(x=>x.trim()).filter(Boolean); }
+function topCounts(obj,limit=999){ return Object.fromEntries(Object.entries(obj).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],"es")).slice(0,limit)); }
+
+function barsHtml(obj, n, limit = 999) {
+  const entries = Object.entries(obj).slice(0, limit);
+  if (!entries.length) return `<p class="empty">Sin datos para los filtros activos.</p>`;
+  const max = Math.max(...entries.map(([,v]) => v), 1);
+  return entries.map(([k, v]) => {
+    const p = pct(v, n);
+    const w = Math.max(3, 100 * v / max);
+    return `
+      <div class="barrow">
+        <div class="bar-header">
+          <div class="barlabel">${escapeHtml(k)}</div>
+          <div class="barval">${v} <span class="muted">(${p}%)</span></div>
+        </div>
+        <div class="bartrack">
+          <div class="bar" style="width:${w}%"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function pct(a,b){ return b ? Math.round((a*1000/b))/10 : 0; }
+function avg(a){ return a.reduce((x,y)=>x+y,0)/a.length; }
+function score(v,max){ const p=v/max, cl=p<.45?"low":p<.68?"mid":"high"; return `<span class="score ${cl}">${v.toFixed(2)}</span>`; }
+
+function setStatus(t, type = "info") {
+  const statusDiv = $("#status");
+  statusDiv.querySelector("span").textContent = t;
+  statusDiv.className = `status ${type}`;
+}
+
+function escapeHtml(s){ return norm(s).replace(/[&<>'"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c])); }
+
+// Run active scrolling highlights on sticky nav
+window.addEventListener('scroll', () => {
+  const navLinks = $$('.nav a');
+  const sections = $$('.section');
+  let currentActive = "";
+  
+  sections.forEach(sec => {
+    const top = sec.offsetTop;
+    const height = sec.offsetHeight;
+    if (window.scrollY >= top - 120 && window.scrollY < top + height - 120) {
+      currentActive = sec.getAttribute('id');
+    }
+  });
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${currentActive}`) {
+      link.classList.add('active');
+    }
+  });
+});
+
+loadData();
+</script>
+</body>
+</html>
